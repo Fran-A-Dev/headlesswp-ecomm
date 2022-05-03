@@ -9,8 +9,10 @@ const Header = () => {
         <p className={styles.headerTitle}>Fran_The_Dev&apos;s Store</p>
 
         <p className={styles.headerCart}>
-          <FaShoppingCart />
-          $0.00
+          <button className="snipcart-checkout">
+            <FaShoppingCart />
+            <span className="snipcart-total-price">-</span>
+          </button>
         </p>
       </Container>
     </header>
