@@ -4,10 +4,11 @@ import Container from "../components/Container/Container";
 import Button from "../components/Button/Button";
 import Header from "../components/Header/Header";
 import styles from "../styles/Home.module.scss";
-import products from "../data/products.json";
-import Script from "next/script";
 
-export default function Home() {
+import Script from "next/script";
+import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+
+export default function Home({ products }) {
   return (
     <div>
       <Head>
@@ -28,24 +29,25 @@ export default function Home() {
           <h2>Available Gear And Swag</h2>
           <ul className={styles.products}>
             {products.map((product) => {
+              const { featuredImage } = product;
               return (
                 <li key={product.id}>
                   <Image
-                    width="1500"
-                    height="1200"
-                    src={product.image}
-                    alt={`Gear and Swag of ${product.title}`}
+                    width={featuredImage.mediaDetails.width}
+                    height={featuredImage.mediaDetails.height}
+                    src={featuredImage.sourceUrl}
+                    alt={featuredImage.altText}
                   />
                   <h3 className={styles.productTitle}>{product.title}</h3>
-                  <p className={styles.productPrice}>${product.price}</p>
+                  <p className={styles.productPrice}>${product.productPrice}</p>
                   <p>
                     <Button
                       className="snipcart-add-item"
-                      data-item-id={product.id}
-                      data-item-price={product.price}
+                      data-item-id={product.productId}
+                      data-item-price={product.productPrice}
                       data-item-url="/"
                       data-item-description=""
-                      data-item-image={product.image}
+                      data-item-image={featuredImage.sourceUrl}
                       data-item-name={product.title}
                     >
                       Add to cart
@@ -70,4 +72,56 @@ export default function Home() {
       ></div>
     </div>
   );
+}
+
+export async function getStaticProps() {
+  const client = new ApolloClient({
+    uri: "https://headlessecomm.wpengine.com/graphql",
+    cache: new InMemoryCache(),
+  });
+  const response = await client.query({
+    query: gql`
+      query AllProducts {
+        products {
+          edges {
+            node {
+              description
+              title
+              uri
+              productId
+              productPrice
+              slug
+              featuredImage {
+                node {
+                  altText
+                  sourceUrl
+                  mediaDetails {
+                    height
+                    width
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `,
+  });
+
+  const products = response.data.products.edges.map(({ node }) => {
+    const data = {
+      ...node,
+      ...node.product,
+      featuredImage: {
+        ...node.featuredImage.node,
+      },
+    };
+    return data;
+  });
+  console.log(products);
+  return {
+    props: {
+      products,
+    },
+  };
 }
