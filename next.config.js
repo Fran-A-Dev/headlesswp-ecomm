@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   target: "serverless",
   images: {
-    domains: ["res.cloudinary.com"],
+    domains: ["headlessecostg.wpengine.com"],
   },
 };
 

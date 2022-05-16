@@ -1,27 +1,35 @@
-.header {
-    width: 100%;
-    background-color: rgb(0, 98, 255);
-    color: white;
-    padding: .5em 0;
+@import "@styles/settings/__settings";
 
-    p {
-        margin: 0;
-    }
-  
+.header {
+
+  width: 100%;
+  background-color: $color-brand-blue;
+  color: white;
+  padding: .5em 0;
+
+  p {
+    margin: 0;
+  }
+
 }
 
 .headerContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .headerTitle {
-    font-size: 2em;
+  color: $color-brand-yellow;
+  font-family: $font-family-display;
+  font-weight: $font-weight-display-bold;
+  font-size: 2em;
 }
 
 .headerCart {
-    button {
+
+  button {
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,8 +37,12 @@
     color: inherit;
     border: none;
     cursor: pointer;
+
     svg {
-        margin-right: .5em;
+      color: $color-brand-yellow;
+      margin-right: .5em;
     }
-}
+
+  }
+
 }

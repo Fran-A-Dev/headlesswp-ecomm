@@ -6,6 +6,7 @@ const Container = ({ children, className, ...rest }) => {
   if (className) {
     containerClassName = `${containerClassName} ${className}`;
   }
+
   return (
     <div className={containerClassName} {...rest}>
       {children}
